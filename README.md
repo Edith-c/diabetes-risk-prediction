@@ -1,57 +1,255 @@
-# 🩺 Diabetes Risk Prediction System
+# 🩺 Diabetes Risk Prediction – End-to-End ML & LLM System
 
-## Project Description
+This project implements a complete Machine Learning and Large Language Model (LLM) workflow for predicting diabetes risk using patient medical information. The system combines supervised machine learning, MLflow experiment tracking, Streamlit deployment, and conversational AI integration through Ollama.
 
-The Diabetes Risk Prediction System is an end-to-end machine learning application that predicts the likelihood of diabetes using medical and demographic information from a patient.
-
-This project was built using the Pima Indians Diabetes Dataset from Kaggle and combines:
-
-- A trained machine learning prediction model
-- A Large Language Model (LLM) conversational interface
-- MLflow experiment tracking
-- Streamlit user interface
-- Ollama local LLM integration
-
-The application is designed for educational and demonstration purposes. Users can enter health information such as glucose level, BMI, age, and blood pressure, and the system predicts diabetes risk while providing an AI-generated explanation.
-
-### Problem Solved
-
-Many users do not understand how medical indicators relate to diabetes risk. This application provides:
-
-- Fast diabetes risk estimation
-- Simple AI explanations
-- Conversational interaction
-- Educational insight into health indicators
-
-### Intended Users
-
-- Students learning ML engineering
-- Healthcare analytics learners
-- Portfolio reviewers and recruiters
-- Users exploring diabetes risk factors
+The application allows users to enter health information in natural language, automatically extracts structured medical features, predicts diabetes risk using a trained machine learning model, and generates a patient-friendly explanation of the prediction.
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
 ```text
-your-project/
-├── README.md
-├── requirements.txt
-├── Dockerfile
-├── .env.example
-├── configs/
-│   └── config.yaml
-├── src/
-│   ├── preprocess.py
-│   ├── train.py
-│   ├── evaluate.py
-│   └── app.py
-├── tests/
-│   ├── test_preprocess.py
-│   ├── test_model.py
-│   └── test_interface.py
-├── notebooks/
-│   └── exploration.ipynb
-└── data/
-    └── .gitkeep
+src/            → Training, preprocessing, evaluation, and Streamlit application  
+tests/          → Unit tests for preprocessing, models, and interface  
+configs/        → YAML configuration files  
+models/         → Saved trained models and preprocessors  
+notebooks/      → Exploratory analysis notebooks  
+mlruns/         → MLflow experiment tracking artifacts  
+data/           → Dataset files (excluded from Git)  
+```
+
+---
+
+# Key Components
+
+## Machine Learning
+
+### Models Trained
+- Logistic Regression
+- Random Forest Classifier
+- Gradient Boosting Classifier
+- Decision Tree Classifier
+- Support Vector Machine (SVM)
+
+### Task
+Predict diabetes risk (`Outcome`)
+
+### Preprocessing
+- Missing value handling
+- Feature scaling
+- Train/test split
+- Data validation
+- Leakage prevention
+
+### Features Used
+- Pregnancies
+- Glucose
+- Blood Pressure
+- Skin Thickness
+- Insulin
+- BMI
+- Diabetes Pedigree Function
+- Age
+
+---
+
+# Experiment Tracking (MLflow)
+
+Each training run is tracked using MLflow.
+
+### Logged Parameters
+- model type
+- hyperparameters
+- preprocessing configuration
+
+### Logged Metrics
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- ROC-AUC
+
+### Logged Artifacts
+- trained model
+- preprocessing pipeline
+- experiment metadata
+
+The project includes multiple experiment runs with different configurations and automatically identifies the best-performing model using `mlflow.search_runs()`.
+
+---
+
+# LLM-Powered Interface
+
+The application integrates a local Large Language Model using Ollama.
+
+The LLM is responsible for:
+- parsing natural language user input,
+- extracting structured medical features,
+- generating contextual explanations,
+- handling incomplete or invalid inputs.
+
+### Example User Input
+```text
+I am 45 years old with glucose 160, BMI 34, insulin 90, and blood pressure 80.
+```
+
+### System Workflow
+Natural Language Input → Feature Extraction → Model Prediction → AI Explanation
+
+---
+
+# Streamlit Application
+
+The frontend application is built using Streamlit.
+
+### Features
+- Interactive user interface
+- Conversational health input
+- Diabetes risk prediction
+- AI-generated explanations
+- Validation warnings for unrealistic values
+- Edge case handling for missing features
+
+---
+
+# Testing (Pytest)
+
+### Included Tests
+- preprocessing validation tests
+- model prediction tests
+- interface parsing tests
+- edge case handling tests
+
+### Run Tests
+```bash
+pytest tests/ -v
+```
+
+---
+
+# Configuration Management
+
+Training hyperparameters are managed using YAML configuration files.
+
+### Example
+```yaml
+random_forest:
+  n_estimators: 100
+  max_depth: 5
+```
+
+This prevents hardcoded training parameters and improves reproducibility.
+
+---
+
+# Version Control
+
+### Git + .gitignore
+The following files are excluded from Git:
+- datasets
+- trained models
+- MLflow artifacts
+- environment variables
+
+### Excluded Files
+```text
+data/
+models/
+mlruns/
+.env
+```
+
+---
+
+# Docker Support
+
+The project includes a Dockerfile for containerized deployment.
+
+### Build Container
+```bash
+docker build -t diabetes-risk-app .
+```
+
+### Run Container
+```bash
+docker run -p 8501:8501 diabetes-risk-app
+```
+
+---
+
+# How to Run
+
+## Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+## Start Ollama
+```bash
+ollama serve
+```
+
+## Pull Llama Model
+```bash
+ollama pull llama3
+```
+
+## Train Models
+```bash
+python src/train.py
+```
+
+## Launch MLflow
+```bash
+mlflow ui
+```
+
+## Run Streamlit Application
+```bash
+streamlit run src/app.py
+```
+
+## Run Tests
+```bash
+pytest tests/ -v
+```
+
+---
+
+# Pipeline Flow
+
+Dataset → Preprocessing → Model Training → MLflow Tracking → Best Model Selection → Streamlit Interface → Ollama LLM Explanation
+
+---
+
+# Technologies Used
+
+## Machine Learning
+- Scikit-learn
+- Pandas
+- NumPy
+
+## Experiment Tracking
+- MLflow
+
+## LLM Integration
+- Ollama
+- Llama 3
+
+## Frontend
+- Streamlit
+
+## Deployment
+- Docker
+
+## Development Tools
+- Git
+- GitHub
+- YAML
+- Pytest
+
+---
+
+# Disclaimer
+
+This project is intended for educational and demonstration purposes only. It is not a medical diagnostic tool and should not be used as a substitute for professional healthcare advice.
